@@ -4,9 +4,9 @@ import java.util.Objects;
 public class RandomNumberGenerator {
 
   static Double seed;
-  final static int CONSTANTE = 4;
+  final static int CONSTANTE = 2531011;
 
-  public static Double generateRandomNumber(Long a, Long maxValue, boolean isCongruenteLinear) {
+  public static Double generateRandomNumber(double a, double maxValue, boolean isCongruenteLinear) {
     if (Objects.isNull(seed)) {
       seed = (double) ZonedDateTime.now().getSecond();
     }

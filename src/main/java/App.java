@@ -1,10 +1,12 @@
 public class App {
 
   public static void main(String[] args) {
-    for (int i = 0; i < 10000; i++) {
-      System.out.println(
-          RandomNumberGenerator.generateRandomNumber(3L, 15L, true));
+    StringBuilder builder = new StringBuilder();
+    for (int i = 0; i < 1000; i++) {
+      builder.append(RandomNumberGenerator.generateRandomNumber(134775813, Math.pow(2, 32), true));
+      builder.append("\n");
     }
+    System.out.println(builder.toString());
   }
 
 }
