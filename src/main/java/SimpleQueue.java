@@ -49,21 +49,23 @@ public class SimpleQueue {
         if (queue.size() < queueSize) {
           updateLogger(event);
           queue.add(event);
-          if (queue.size() <= nServidores) {
-            agendaEvento(EventType.SAIDA);
-          }
         } else {
+          globalTime = event.getTime();
           perda++;
         }
+        agendaEvento(EventType.ENTRADA);
       } else {
         updateLogger(event);
         queue.remove(0);
-        if (queue.size() <= nServidores) {
-          agendaEvento(EventType.SAIDA);
-        }
       }
 
-      agendaEvento(EventType.ENTRADA);
+      long servidoresOcupados = escalonador.stream()
+          .filter(eventFilter -> (eventFilter.getEventType().equals(EventType.SAIDA)))
+          .count();
+
+      if (queue.size() >= nServidores && servidoresOcupados < nServidores) {
+        agendaEvento(EventType.SAIDA);
+      }
     }
 
     System.out.printf(
