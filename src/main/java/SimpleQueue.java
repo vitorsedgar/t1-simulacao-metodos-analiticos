@@ -74,7 +74,7 @@ public class SimpleQueue {
 
   private void updateLogger(QueueEvent event) {
     Double queueStatusTime = statusVerifierMap.get(queue.size());
-    statusVerifierMap.put(queue.size(), queueStatusTime + (globalTime - event.getTime()));
+    statusVerifierMap.put(queue.size(), queueStatusTime + (event.getTime() - globalTime));
   }
 
   private void agendaEvento(EventType eventType) {
