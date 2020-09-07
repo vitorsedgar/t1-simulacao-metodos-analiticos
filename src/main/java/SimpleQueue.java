@@ -32,7 +32,7 @@ public class SimpleQueue {
     globalTime = 0.0;
     queue = new ArrayList<QueueEvent>();
     statusVerifierMap = new HashMap<>();
-    for (int i = 0; i < queueSize; i++) {
+    for (int i = 0; i <= queueSize; i++) {
       statusVerifierMap.put(i, 0.0);
     }
   }
@@ -49,7 +49,7 @@ public class SimpleQueue {
         if (queue.size() < queueSize) {
           updateLogger(event);
           queue.add(event);
-          if (queue.size() < nServidores) {
+          if (queue.size() <= nServidores) {
             agendaEvento(EventType.SAIDA);
           }
         } else {
@@ -58,14 +58,18 @@ public class SimpleQueue {
       } else {
         updateLogger(event);
         queue.remove(0);
+        if (queue.size() <= nServidores) {
+          agendaEvento(EventType.SAIDA);
+        }
       }
 
       agendaEvento(EventType.ENTRADA);
-      globalTime = event.getTime();
     }
 
-    System.out.printf("QUEUE FINAL STATUS: \n QUEUE SIZE: %s \n GLOBAL TIME: %s%n", queue.size(),
-        globalTime);
+    System.out.printf(
+        "QUEUE FINAL STATUS: \n QUEUE SIZE: %s \n GLOBAL TIME: %s%n \n CLIENTES PERDIDOS: %s \n",
+        queue.size(),
+        globalTime, perda);
 
     for (int i = 0; i < queueSize; i++) {
       System.out.printf("QUEUE HAD SIZE %s PER %s times \n", i, statusVerifierMap.get(i));
@@ -75,6 +79,7 @@ public class SimpleQueue {
   private void updateLogger(QueueEvent event) {
     Double queueStatusTime = statusVerifierMap.get(queue.size());
     statusVerifierMap.put(queue.size(), queueStatusTime + (event.getTime() - globalTime));
+    globalTime = event.getTime();
   }
 
   private void agendaEvento(EventType eventType) {

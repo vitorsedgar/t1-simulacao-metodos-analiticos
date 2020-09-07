@@ -32,9 +32,9 @@ class EventQueueComparator implements Comparator<QueueEvent> {
 
   @Override
   public int compare(QueueEvent q1, QueueEvent q2) {
-    if (q1.getTime() < q2.getTime()) {
+    if (q1.getTime() > q2.getTime()) {
       return 1;
-    } else if (q1.getTime() > q2.getTime()) {
+    } else if (q1.getTime() < q2.getTime()) {
       return -1;
     }
     return 0;
