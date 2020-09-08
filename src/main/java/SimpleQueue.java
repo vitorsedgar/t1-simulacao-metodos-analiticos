@@ -23,10 +23,18 @@ public class SimpleQueue {
   private PriorityQueue<QueueEvent> escalonador;
   private int nRandomGenerated = 0;
   private Map<Integer, Double> statusVerifierMap;
-
-  public SimpleQueue(int queueSize, int nServidores) {
+  private Double arrivalTimeMin;
+  private Double arrivalTimeMax;
+  private Double terminationTimeMin;
+  private Double terminationTimeMax;
+  public SimpleQueue(int queueSize, int nServidores, Double arrivalTimeMin,
+      Double arrivalTimeMax, Double terminationTimeMin, Double terminationTimeMax) {
     this.queueSize = queueSize;
     this.nServidores = nServidores;
+    this.arrivalTimeMin = arrivalTimeMin;
+    this.arrivalTimeMax = arrivalTimeMax;
+    this.terminationTimeMin = terminationTimeMin;
+    this.terminationTimeMax = terminationTimeMax;
     escalonador = new PriorityQueue<QueueEvent>(new EventQueueComparator());
     perda = 0;
     globalTime = 0.0;
@@ -91,7 +99,7 @@ public class SimpleQueue {
     nRandomGenerated++;
     escalonador.add(new QueueEvent(eventType,
         eventType.equals(EventType.ENTRADA) ?
-            globalTime + RandomNumberGenerator.getNextEventTime(2.0, 4.0) :
-            globalTime + RandomNumberGenerator.getNextEventTime(3.0, 5.0)));
+            globalTime + RandomNumberGenerator.getNextEventTime(arrivalTimeMin, arrivalTimeMax) :
+            globalTime + RandomNumberGenerator.getNextEventTime(terminationTimeMin, terminationTimeMax)));
   }
 }
