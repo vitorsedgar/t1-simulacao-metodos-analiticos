@@ -4,8 +4,8 @@
 - [DONE] <s>Testar e documentar código para ser compilado (.jar) Output: comando no terminal </s>
 - [DONE] <s>Alterar implementação para aceitar as varáveis passadas no arquivo </s>
 - Adicionar calculo para porcentagem de chance no tamanho da fila
-- Alterar entrada para rodar 5 vezes
-- Alterar log de output para fazer média das execuções (tempo)
+- [DONE] <s> Alterar entrada para rodar 5 vezes </s>
+- [DONE] <s> Alterar log de output para fazer média das execuções (tempo) </s>
 
 ## Como rodar o projeto:
 

@@ -45,7 +45,7 @@ public class SimpleQueue {
     }
   }
 
-  public void start() {
+  public Double start() {
     // Tempo da chegada do primeiro evento é 3 devido as definições do trabalho
     escalonador.add(new QueueEvent(EventType.ENTRADA, 3.0));
 
@@ -84,6 +84,8 @@ public class SimpleQueue {
     for (int i = 0; i < queueSize; i++) {
       System.out.printf("QUEUE HAD SIZE %s PER %s times \n", i, statusVerifierMap.get(i));
     }
+
+    return globalTime;
   }
 
   private void updateLogger(QueueEvent event) {
