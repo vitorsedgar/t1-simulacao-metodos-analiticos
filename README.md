@@ -1,9 +1,9 @@
 ## TODO
 
-- [DONE] <s>Leitura de arquivo ou parametrização para input das variáveis (tempo médio de chegada e saída, número de servidores e capacidade da fila). Sugestão: .yml ou variaveis parametrizadas pelo comando ao rodar o jar </s>
-- [DONE] <s>Testar e documentar código para ser compilado (.jar) Output: comando no terminal </s>
-- [DONE] <s>Alterar implementação para aceitar as varáveis passadas no arquivo </s>
-- Adicionar calculo para porcentagem de chance no tamanho da fila
+- [DONE] <s> Leitura de arquivo ou parametrização para input das variáveis (tempo médio de chegada e saída, número de servidores e capacidade da fila). Sugestão: .yml ou variaveis parametrizadas pelo comando ao rodar o jar </s>
+- [DONE] <s> Testar e documentar código para ser compilado (.jar) Output: comando no terminal </s>
+- [DONE] <s> Alterar implementação para aceitar as varáveis passadas no arquivo </s>
+- [DONE] <s> Adicionar calculo para porcentagem de chance no tamanho da fila </s>
 - [DONE] <s> Alterar entrada para rodar 5 vezes </s>
 - [DONE] <s> Alterar log de output para fazer média das execuções (tempo) </s>
 

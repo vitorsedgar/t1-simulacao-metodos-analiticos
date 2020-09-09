@@ -82,10 +82,14 @@ public class SimpleQueue {
         globalTime, perda);
 
     for (int i = 0; i < queueSize; i++) {
-      System.out.printf("QUEUE HAD SIZE %s PER %s times \n", i, statusVerifierMap.get(i));
+      System.out.printf("QUEUE HAD SIZE %s PER %s times WITH %s OF PROBABILITY \n", i, statusVerifierMap.get(i), getProbability(i));
     }
 
     return globalTime;
+  }
+
+  private String getProbability(int statusIndex) {
+    return String.format("%.2f", statusVerifierMap.get(statusIndex) / globalTime * 100) + "%";
   }
 
   private void updateLogger(QueueEvent event) {
