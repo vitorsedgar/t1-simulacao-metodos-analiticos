@@ -58,7 +58,7 @@ public class SimpleQueue {
           updateLogger(event);
           queue.add(event);
         } else {
-          globalTime = event.getTime();
+          updateLogger(event);
           perda++;
         }
         agendaEvento(EventType.ENTRADA);
@@ -81,10 +81,15 @@ public class SimpleQueue {
         queue.size(),
         globalTime, perda);
 
-    for (int i = 0; i < queueSize; i++) {
+    Double somaDasLinhas = 0.0;
+
+    for (int i = 0; i <= queueSize; i++) {
+      somaDasLinhas += statusVerifierMap.get(i);
       System.out.printf("QUEUE HAD SIZE %s PER %s times WITH %s OF PROBABILITY \n", i, statusVerifierMap.get(i), getProbability(i));
     }
 
+    System.out.println("SOMA DAS LINHAS: " + somaDasLinhas);
+    System.out.println("GLOBAL TIME: " + globalTime);
     return globalTime;
   }
 
