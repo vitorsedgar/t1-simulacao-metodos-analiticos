@@ -88,8 +88,8 @@ public class SimpleQueue {
       System.out.printf("QUEUE HAD SIZE %s PER %s times WITH %s OF PROBABILITY \n", i, statusVerifierMap.get(i), getProbability(i));
     }
 
-    System.out.println("SOMA DAS LINHAS: " + somaDasLinhas);
-    System.out.println("GLOBAL TIME: " + globalTime);
+    //System.out.println("SOMA DAS LINHAS: " + somaDasLinhas);
+    //System.out.println("GLOBAL TIME: " + globalTime);
     return globalTime;
   }
 

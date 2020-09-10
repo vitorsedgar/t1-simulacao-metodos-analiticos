@@ -25,8 +25,9 @@ public class App {
 
       System.out.println("------------------------------------------");
 
-      System.out.println("Avarage global time: " + (somatorio/5));
     }
+
+    System.out.println("\nAvarage global time: " + (somatorio/5));
   }
 
 }
