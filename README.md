@@ -7,6 +7,12 @@
 - [DONE] <s> Alterar entrada para rodar 5 vezes </s>
 - [DONE] <s> Alterar log de output para fazer média das execuções (tempo) </s>
 
+##### AJUSTES:
+
+- Separar lógicas de entrada e saida 
+- Lógicas de entrada e saída devem ser IGUAL no algortimo passado em aula
+- Fila não deve ser uma fila e sim um contador
+
 ## Como rodar o projeto:
 
 Após compilador o jar execute: 
