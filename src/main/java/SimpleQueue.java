@@ -57,14 +57,6 @@ public class SimpleQueue {
       } else {
         saida(event);
       }
-
-      long servidoresOcupados = escalonador.stream()
-          .filter(eventFilter -> (eventFilter.getEventType().equals(EventType.SAIDA)))
-          .count();
-
-      if (fila >= nServidores && servidoresOcupados < nServidores) {
-        agendaEvento(EventType.SAIDA);
-      }
     }
 
     System.out.printf(
@@ -88,7 +80,7 @@ public class SimpleQueue {
   private void saida(QueueEvent event) {
     contabilizaTempo(event.getTime());
     fila--;
-    if (fila >= 1) {
+    if (fila >= nServidores) {
       agendaEvento(EventType.SAIDA);
     }
   }
@@ -97,7 +89,7 @@ public class SimpleQueue {
     contabilizaTempo(event.getTime());
     if (fila < tamanhoMaximoDaFila) {
       fila++;
-      if (fila < nServidores) {
+      if (fila <= nServidores) {
         agendaEvento(EventType.SAIDA);
       }
     } else {

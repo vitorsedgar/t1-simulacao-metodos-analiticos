@@ -3,6 +3,7 @@ public class App {
   public static void main(String[] args) {
 
     String[] split = args[0].split("-");
+//    String[] split = "2:4-3:5-2-5".split("-");
 
     String chegada[] = split[0].split(":");
     String saida[] = split[1].split(":");
