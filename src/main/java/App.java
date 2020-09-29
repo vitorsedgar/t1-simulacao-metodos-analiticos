@@ -16,13 +16,13 @@ public class App {
     for (int i = 0; i < 5; i++) {
 
       System.out.printf("Execução da %dº simulação: \n\n", i+1);
-      SimpleQueue simpleQueue = new SimpleQueue(capacidade, servidores,
+      FilaSimples filaSimples = new FilaSimples(capacidade, servidores,
           Double.valueOf(chegada[0]),
           Double.valueOf(chegada[1]),
           Double.valueOf(saida[0]),
           Double.valueOf(saida[1]));
 
-      somatorio += simpleQueue.start();
+      somatorio += filaSimples.start();
 
       System.out.println("------------------------------------------");
 
