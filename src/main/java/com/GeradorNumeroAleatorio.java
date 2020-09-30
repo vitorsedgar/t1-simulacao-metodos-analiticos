@@ -1,10 +1,12 @@
+package com;
+
 import java.time.ZonedDateTime;
 import java.util.Objects;
 
 public class GeradorNumeroAleatorio {
 
   final static int CONSTANTE = 2531011;
-  static Double seed;
+  static Double seed = 8.0;
 
   public static Double generateRandomNumberFrom(double a, double maxValue,
       boolean isCongruenteLinear) {

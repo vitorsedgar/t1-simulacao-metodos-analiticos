@@ -1,28 +1,50 @@
+import com.Contexto;
+import com.Escalonador;
+import com.Fila;
+import com.evento.Evento;
+import com.evento.EventoChegada;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.stream.Collectors;
+
 public class App {
 
-  public static void main(String[] args) {
+  public static void main(String[] args) throws IOException {
 
-    String[] split = args[0].split("-");
-//    String[] split = "2:4-3:5-2-5".split("-");
-
-    String chegada[] = split[0].split(":");
-    String saida[] = split[1].split(":");
-
-    Integer servidores = Integer.valueOf(split[2]);
-    Integer capacidade = Integer.valueOf(split[3]);
+    List<String> linhas = Files.lines(Paths.get("config.txt")).collect(Collectors.toList());
 
     Double somatorio = 0.0;
 
     for (int i = 0; i < 5; i++) {
 
-      System.out.printf("Execução da %dº simulação: \n\n", i+1);
-      FilaSimples filaSimples = new FilaSimples(capacidade, servidores,
-          Double.valueOf(chegada[0]),
-          Double.valueOf(chegada[1]),
-          Double.valueOf(saida[0]),
-          Double.valueOf(saida[1]));
+      List<Fila> filas = new LinkedList<>();
 
-      somatorio += filaSimples.start();
+      linhas.forEach(linha -> {
+        String[] split = linha.split("-");
+        String[] chegada = split[0].split(":");
+        String[] saida = split[1].split(":");
+        int servidores = Integer.parseInt(split[2]);
+        int capacidade = Integer.parseInt(split[3]);
+
+        filas.add(new Fila(capacidade, servidores,
+                Double.valueOf(chegada[0]),
+                Double.valueOf(chegada[1]),
+                Double.valueOf(saida[0]),
+                Double.valueOf(saida[1])));
+      });
+
+      System.out.printf("Execução da %dº simulação: \n\n", i+1);
+
+      //Evento eventoInicial = new EventoCH1(2.5);
+      Evento eventoInicial = new EventoChegada(3.0);
+      Escalonador.iniciarEscalonador(eventoInicial);
+      Contexto.start(filas);
+
+      somatorio += Contexto.tempoGlobal;
 
       System.out.println("------------------------------------------");
 
