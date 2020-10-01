@@ -7,33 +7,25 @@ import com.GeradorNumeroAleatorio;
 
 import java.util.List;
 
-public class EventoSaida implements Evento {
+public class EventoSaida extends EventoAbstract {
 
-    private final Double tempo;
-
-    public EventoSaida(Double tempo) {
-        this.tempo = tempo;
+    public EventoSaida(double tempo, int indexFilaOrigem) {
+        super(tempo, indexFilaOrigem);
     }
 
     @Override
     public void executa(List<Fila> filas) {
         filas.forEach(fila-> fila.contabilizaTempo(tempo));
-        Fila fila = filas.get(0);
+        Contexto.tempoGlobal = tempo;
+        Fila fila = filas.get(indexFilaOrigem);
 
         fila.removerEvento();
-
         if (fila.naoPossuiServidorDisponivel()) {
-            Escalonador.agendar(
-                    new EventoSaida(Contexto.tempoGlobal
-                            + GeradorNumeroAleatorio.getNextEventTime(fila.getTempoSaidaMinimo(), fila.getTempoSaidaMaximo()
-                    ))
+            Escalonador.agendar(new EventoSaida(
+                    Contexto.tempoGlobal + GeradorNumeroAleatorio.getNextEventTime(fila.getTempoSaidaMinimo(), fila.getTempoSaidaMaximo()),
+                    indexFilaOrigem)
             );
         }
-    }
-
-    @Override
-    public double getTempo() {
-        return tempo;
     }
 
 }

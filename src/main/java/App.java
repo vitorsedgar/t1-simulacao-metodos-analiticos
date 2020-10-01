@@ -1,12 +1,14 @@
 import com.Contexto;
 import com.Escalonador;
 import com.Fila;
+import com.Roteamento;
 import com.evento.Evento;
 import com.evento.EventoChegada;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -24,23 +26,35 @@ public class App {
       List<Fila> filas = new LinkedList<>();
 
       linhas.forEach(linha -> {
-        String[] split = linha.split("-");
-        String[] chegada = split[0].split(":");
-        String[] saida = split[1].split(":");
-        int servidores = Integer.parseInt(split[2]);
-        int capacidade = Integer.parseInt(split[3]);
+        String[] splitFila = linha.split("/")[0].split("-");
+        String[] chegada = splitFila[0].split(":");
+        String[] saida = splitFila[1].split(":");
+        int servidores = Integer.parseInt(splitFila[2]);
+        int capacidade = Integer.parseInt(splitFila[3]);
+        List<Roteamento> roteamentos = new ArrayList<>();
+
+        try {
+          String[] splitRoteamentos = linha.split("/")[1].split(",");
+          for (String splitRoteamento : splitRoteamentos) {
+            String[] roteamento = splitRoteamento.split("=");
+            roteamentos.add(new Roteamento(Integer.parseInt(roteamento[0]), Double.parseDouble(roteamento[1])));
+          }
+        } catch (ArrayIndexOutOfBoundsException ignored) {
+
+        }
 
         filas.add(new Fila(capacidade, servidores,
                 Double.valueOf(chegada[0]),
                 Double.valueOf(chegada[1]),
                 Double.valueOf(saida[0]),
-                Double.valueOf(saida[1])));
+                Double.valueOf(saida[1]),
+                roteamentos));
       });
 
       System.out.printf("Execução da %dº simulação: \n\n", i+1);
 
       //Evento eventoInicial = new EventoCH1(2.5);
-      Evento eventoInicial = new EventoChegada(3.0);
+      Evento eventoInicial = new EventoChegada(2.5, 0);
       Escalonador.iniciarEscalonador(eventoInicial);
       Contexto.start(filas);
 
