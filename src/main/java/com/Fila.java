@@ -8,16 +8,16 @@ import java.util.concurrent.atomic.AtomicReference;
 
 public class Fila {
 
-    private int fila;
-    private int tamanhoMaximoDaFila;
-    private int nServidores;
-    private int perda;
-    private Map<Integer, Double> statusMap;
-    private Double tempoChegadaMinimo;
-    private Double tempoChegadaMaximo;
-    private Double tempoSaidaMinimo;
-    private Double tempoSaidaMaximo;
-    private List<Roteamento> roteamentos;
+    public int fila;
+    public int tamanhoMaximoDaFila;
+    public int nServidores;
+    public int perda;
+    public Map<Integer, Double> statusMap;
+    public Double tempoChegadaMinimo;
+    public Double tempoChegadaMaximo;
+    public Double tempoSaidaMinimo;
+    public Double tempoSaidaMaximo;
+    public List<Roteamento> roteamentos;
 
     public Fila(int tamanhoMaximoDaFila, int nServidores, Double tempoChegadaMinimo, Double tempoChegadaMaximo,
                 Double tempoSaidaMinimo, Double tempoSaidaMaximo, List<Roteamento> roteamentos) {
