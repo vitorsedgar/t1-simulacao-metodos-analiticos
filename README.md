@@ -1,32 +1,26 @@
 ## TODO
 
-- [DONE] <s> Leitura de arquivo ou parametrização para input das variáveis (tempo médio de chegada e saída, número de servidores e capacidade da fila). Sugestão: .yml ou variaveis parametrizadas pelo comando ao rodar o jar </s>
-- [DONE] <s> Testar e documentar código para ser compilado (.jar) Output: comando no terminal </s>
-- [DONE] <s> Alterar implementação para aceitar as varáveis passadas no arquivo </s>
-- [DONE] <s> Adicionar calculo para porcentagem de chance no tamanho da fila </s>
-- [DONE] <s> Alterar entrada para rodar 5 vezes </s>
-- [DONE] <s> Alterar log de output para fazer média das execuções (tempo) </s>
-
 ##### AJUSTES:
-
-- Separar lógicas de entrada e saida 
-- Lógicas de entrada e saída devem ser IGUAL no algortimo passado em aula
-- Fila não deve ser uma fila e sim um contador
 
 ## Como rodar o projeto:
 
 Após compilador o jar execute: 
 
-```java -jar t1-metodos-analiticos-1.0-SNAPSHOT.jar 2:4-3:5-2-5```
+```java -jar t1-metodos-analiticos-1.0-SNAPSHOT.jar```
 
 - Lembrando que o comando funciona caso o terminal esteja aberto no mesmo diretório do .jar, caso não, aponte para o mesmo
+- É necessário também um arquivo config.txt que deve conter as configurações das filas na seguinte forma:
 
-Caso queira alterar os parametros da execução altere os valores numéricos:
+```
+2:3-2:5-2-3/1=100
+0:0-3:5-1-3
+```
 
-- 2:4 - Tempo de chegada minimo e máximo
-- 3:5 - Tempo de saída minimo e máximo
+- 2:3 - Tempo de chegada minimo e máximo
+- 2:5 - Tempo de saída minimo e máximo
 - 2 - Número de servidores
-- 5 - Capacidade máxima da fila 
+- 5 - Capacidade máxima da fila
+- 1=100 - Index da Fila destino de roteamento = %probabilidade (Caso não informado será considerado como sem probabilidade de roteamento) 
 
 Exemplo de logging para uso como base: 
 
