@@ -33,35 +33,26 @@ public class App {
 
       List<Fila> filas = new LinkedList<>();
 
-      linhas.forEach(linha -> {
-        String[] splitFila = linha.split("/")[0].split("-");
-        String[] chegada = splitFila[0].split(":");
-        String[] saida = splitFila[1].split(":");
-        int servidores = Integer.parseInt(splitFila[2]);
-        int capacidade = Integer.parseInt(splitFila[3]);
-        List<Roteamento> roteamentos = new ArrayList<>();
-
-        try {
-          String[] splitRoteamentos = linha.split("/")[1].split(",");
-          for (String splitRoteamento : splitRoteamentos) {
-            String[] roteamento = splitRoteamento.split("=");
-            roteamentos.add(new Roteamento(Integer.parseInt(roteamento[0]), Double.parseDouble(roteamento[1])));
-          }
-        } catch (ArrayIndexOutOfBoundsException ignored) {
-
-        }
-
-        filas.add(new Fila(capacidade, servidores,
-                Double.valueOf(chegada[0]),
-                Double.valueOf(chegada[1]),
-                Double.valueOf(saida[0]),
-                Double.valueOf(saida[1]),
-                roteamentos));
+      pojo.getQueues().forEach((s, queueConfig) -> {
+        filas.add(new Fila(
+            queueConfig.getCapacity(),
+            queueConfig.getServers(),
+            queueConfig.getMinArrival(),
+            queueConfig.getMaxArrival(),
+            queueConfig.getMinService(),
+            queueConfig.getMaxService(),
+            new ArrayList<Roteamento>() {{
+              addAll(pojo.getNetwork()
+                  .stream()
+                  .filter(outputConfig -> outputConfig.getSource().equals(s))
+                  .map(outputConfig -> new Roteamento(outputConfig.getTarget(), outputConfig.getProbability()))
+                  .collect(Collectors.toList()));
+            }}));
       });
 
       System.out.printf("Execução da %dº simulação: \n\n", i+1);
 
-      Evento eventoInicial = new EventoCH1(2.5);
+      Evento eventoInicial = new EventoCH1(pojo.getArrivals().get(0));
       //Evento eventoInicial = new EventoChegada(2.5, 0);
       Escalonador.iniciarEscalonador(eventoInicial);
       Contexto.start(filas);
