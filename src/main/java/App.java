@@ -35,6 +35,7 @@ public class App {
 
       pojo.getQueues().forEach((s, queueConfig) -> {
         filas.add(new Fila(
+            s,
             queueConfig.getCapacity(),
             queueConfig.getServers(),
             queueConfig.getMinArrival(),

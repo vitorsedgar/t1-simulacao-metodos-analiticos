@@ -22,7 +22,7 @@ public class EventoChegada extends EventoAbstract {
         if (fila.possuiEspaco()) {
             fila.adicionarEvento();
             if (fila.possuiServidorDisponivel()) {
-                Integer destinoRoteamento = fila.getDestinoRoteamento();
+                String destinoRoteamento = fila.getDestinoRoteamento();
                 if (destinoRoteamento != null) {
                     Escalonador.agendar(new EventoRoteamento(
                             Contexto.tempoGlobal + GeradorNumeroAleatorio.getNextEventTime(fila.getTempoSaidaMinimo(), fila.getTempoSaidaMaximo()),
