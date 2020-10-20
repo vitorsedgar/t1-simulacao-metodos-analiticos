@@ -4,6 +4,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 public class Fila {
 
@@ -42,8 +43,9 @@ public class Fila {
   }
 
   public void contabilizaTempo(Double tempoEvento) {
-    Double tempoStatusFila = statusMap.get(fila);
-    statusMap.put(fila, tempoStatusFila + (tempoEvento - Contexto.tempoGlobal));
+    Double tempoStatusFila = this.statusMap.get(fila);
+    this.statusMap.put(fila,
+        Optional.ofNullable(tempoStatusFila).orElse(0.0) + (tempoEvento - Contexto.tempoGlobal));
   }
 
   public void adicionarEvento() {
@@ -59,7 +61,7 @@ public class Fila {
   }
 
   public boolean possuiEspaco() {
-    return fila < tamanhoMaximoDaFila;
+    return fila < tamanhoMaximoDaFila || tamanhoMaximoDaFila == 0;
   }
 
   public boolean possuiServidorDisponivel() {
@@ -109,18 +111,24 @@ public class Fila {
     }
 
     double aleatorio = GeradorNumeroAleatorio
-        .generateRandomNumberFrom(0.0, 100.0, true) / 100;
+        .generateRandomNumberFrom(134775813, Math.pow(2, 32), true);
+
+    String filaDestino = null;
 
     this.roteamentos.sort(Comparator.comparingDouble(Roteamento::getProbabilidade));
 
-    double aux = 0;
-    for (int i = 0; i < roteamentos.size(); i++) {
-      aux += roteamentos.get(i).getProbabilidade();
-      if (aleatorio < aux) {
-        return roteamentos.get(i).getIndexFila();
+    Double probabilidade = 0.0;
+    List<Roteamento> roteamentoList = this.roteamentos;
+    for (int i = 0, roteamentoListSize = roteamentoList.size(); i < roteamentoListSize; i++) {
+      Roteamento roteamento = roteamentoList.get(i);
+      probabilidade += roteamento.getProbabilidade();
+      if (aleatorio <= probabilidade) {
+        filaDestino = roteamento.getIndexFila();
+        break;
       }
     }
-    return "Out";
+
+    return filaDestino;
   }
 
 }

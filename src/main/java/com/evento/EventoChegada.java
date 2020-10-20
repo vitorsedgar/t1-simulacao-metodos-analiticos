@@ -15,8 +15,8 @@ public class EventoChegada extends EventoAbstract {
 
     @Override
     public void executa(List<Fila> filas) {
-        filas.forEach(fila -> fila.contabilizaTempo(tempo));
-        Contexto.tempoGlobal = tempo;
+        contabilizaTempos(filas);
+
         Fila fila = filas.get(indexFilaOrigem);
 
         if (fila.possuiEspaco()) {

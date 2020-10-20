@@ -43,10 +43,19 @@ public class EventoRoteamento extends EventoAbstract {
         if (fila2.possuiEspaco()) {
             fila2.adicionarEvento();
             if (fila2.possuiServidorDisponivel()) {
-                Escalonador.agendar(new EventoSaida(
-                        Contexto.tempoGlobal + GeradorNumeroAleatorio.getNextEventTime(fila2.getTempoSaidaMinimo(), fila2.getTempoSaidaMaximo()),
-                        indexFilaDestino)
-                );
+                String destinoRoteamento2 = fila2.getDestinoRoteamento();
+                if (destinoRoteamento2 != null) {
+                    Escalonador.agendar(new EventoRoteamento(
+                            Contexto.tempoGlobal + GeradorNumeroAleatorio.getNextEventTime(fila2.getTempoSaidaMinimo(), fila2.getTempoSaidaMaximo()),
+                            indexFilaDestino,
+                            destinoRoteamento2)
+                    );
+                } else {
+                    Escalonador.agendar(new EventoSaida(
+                            Contexto.tempoGlobal + GeradorNumeroAleatorio.getNextEventTime(fila2.getTempoSaidaMinimo(), fila2.getTempoSaidaMaximo()),
+                            indexFilaDestino)
+                    );
+                }
             }
         } else {
             fila2.adicionarPerda();

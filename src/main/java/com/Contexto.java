@@ -11,7 +11,7 @@ public class Contexto {
         tempoGlobal = 0.0;
         nRandomGerados = 0;
 
-        while (nRandomGerados < 100000) {
+        while (nRandomGerados < 1000) {
             Escalonador.executarProximoEvento(filas);
         }
 

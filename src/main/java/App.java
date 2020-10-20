@@ -4,9 +4,8 @@ import com.Fila;
 import com.Roteamento;
 import com.YamlConfigPojo;
 import com.evento.Evento;
-import com.evento.EventoCH1;
-import com.evento.EventoChegada;
 
+import com.evento.EventoChegada;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import java.io.File;
@@ -53,7 +52,7 @@ public class App {
 
       System.out.printf("Execução da %dº simulação: \n\n", i+1);
 
-      Evento eventoInicial = new EventoCH1(pojo.getArrivals().get(0));
+      Evento eventoInicial = new EventoChegada(pojo.getArrivals().get(0));
       //Evento eventoInicial = new EventoChegada(2.5, 0);
       Escalonador.iniciarEscalonador(eventoInicial);
       Contexto.start(filas);
@@ -65,14 +64,6 @@ public class App {
     }
 
     System.out.println("\nAvarage global time: " + (somatorio/5));
-  }
-
-  public static String convertYamlToJson(String yaml) throws IOException {
-    ObjectMapper yamlReader = new ObjectMapper(new YAMLFactory());
-    Object obj = yamlReader.readValue(yaml, Object.class);
-
-    ObjectMapper jsonWriter = new ObjectMapper();
-    return jsonWriter.writeValueAsString(obj);
   }
 
 }
