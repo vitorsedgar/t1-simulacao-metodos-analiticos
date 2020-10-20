@@ -54,8 +54,8 @@ public class App {
 
       System.out.printf("Execução da %dº simulação: \n\n", i+1);
 
-      Evento eventoInicial = new EventoCH1(2.5);
-      //Evento eventoInicial = new EventoChegada(2.5, 0);
+      //Evento eventoInicial = new EventoCH1(2.5);
+      Evento eventoInicial = new EventoChegada(1, 0);
       Escalonador.iniciarEscalonador(eventoInicial);
       Contexto.start(filas);
 

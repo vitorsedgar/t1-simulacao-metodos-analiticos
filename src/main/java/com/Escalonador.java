@@ -11,7 +11,6 @@ public class Escalonador {
     private static PriorityQueue<Evento> escalonador;
 
     public static void agendar(Evento evento) {
-        Contexto.nRandomGerados++;
         escalonador.add(evento);
     }
 

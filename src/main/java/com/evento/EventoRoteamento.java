@@ -9,7 +9,7 @@ import java.util.List;
 
 public class EventoRoteamento extends EventoAbstract {
 
-    private Integer indexFilaDestino;
+    private final Integer indexFilaDestino;
 
     public EventoRoteamento(double tempo, int indexFilaOrigem, int indexFilaDestino) {
         super(tempo, indexFilaOrigem);
@@ -18,8 +18,8 @@ public class EventoRoteamento extends EventoAbstract {
 
     @Override
     public void executa(List<Fila> filas) {
-        filas.forEach(fila-> fila.contabilizaTempo(tempo));
-        Contexto.tempoGlobal = tempo;
+        contabilizaTempos(filas);
+
         Fila fila1 = filas.get(indexFilaOrigem);
         Fila fila2 = filas.get(indexFilaDestino);
 
@@ -43,14 +43,24 @@ public class EventoRoteamento extends EventoAbstract {
         if (fila2.possuiEspaco()) {
             fila2.adicionarEvento();
             if (fila2.possuiServidorDisponivel()) {
-                Escalonador.agendar(new EventoSaida(
-                        Contexto.tempoGlobal + GeradorNumeroAleatorio.getNextEventTime(fila2.getTempoSaidaMinimo(), fila2.getTempoSaidaMaximo()),
-                        indexFilaDestino)
-                );
+                Integer destinoRoteamento2 = fila2.getDestinoRoteamento();
+                if (destinoRoteamento2 != null) {
+                    Escalonador.agendar(new EventoRoteamento(
+                            Contexto.tempoGlobal + GeradorNumeroAleatorio.getNextEventTime(fila2.getTempoSaidaMinimo(), fila2.getTempoSaidaMaximo()),
+                            indexFilaDestino,
+                            destinoRoteamento2)
+                    );
+                } else {
+                    Escalonador.agendar(new EventoSaida(
+                            Contexto.tempoGlobal + GeradorNumeroAleatorio.getNextEventTime(fila2.getTempoSaidaMinimo(), fila2.getTempoSaidaMaximo()),
+                            indexFilaDestino)
+                    );
+                }
             }
         } else {
             fila2.adicionarPerda();
         }
+
     }
 
 }

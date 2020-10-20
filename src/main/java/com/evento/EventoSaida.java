@@ -15,16 +15,25 @@ public class EventoSaida extends EventoAbstract {
 
     @Override
     public void executa(List<Fila> filas) {
-        filas.forEach(fila-> fila.contabilizaTempo(tempo));
-        Contexto.tempoGlobal = tempo;
+        contabilizaTempos(filas);
+
         Fila fila = filas.get(indexFilaOrigem);
 
         fila.removerEvento();
         if (fila.naoPossuiServidorDisponivel()) {
-            Escalonador.agendar(new EventoSaida(
-                    Contexto.tempoGlobal + GeradorNumeroAleatorio.getNextEventTime(fila.getTempoSaidaMinimo(), fila.getTempoSaidaMaximo()),
-                    indexFilaOrigem)
-            );
+            Integer destinoRoteamento = fila.getDestinoRoteamento();
+            if (destinoRoteamento != null) {
+                Escalonador.agendar(new EventoRoteamento(
+                        Contexto.tempoGlobal + GeradorNumeroAleatorio.getNextEventTime(fila.getTempoSaidaMinimo(), fila.getTempoSaidaMaximo()),
+                        indexFilaOrigem,
+                        destinoRoteamento)
+                );
+            } else {
+                Escalonador.agendar(new EventoSaida(
+                        Contexto.tempoGlobal + GeradorNumeroAleatorio.getNextEventTime(fila.getTempoSaidaMinimo(), fila.getTempoSaidaMaximo()),
+                        indexFilaOrigem)
+                );
+            }
         }
     }
 

@@ -4,6 +4,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class Fila {
@@ -39,8 +40,8 @@ public class Fila {
     }
 
     public void contabilizaTempo(Double tempoEvento) {
-        Double tempoStatusFila = statusMap.get(fila);
-        statusMap.put(fila, tempoStatusFila + (tempoEvento - Contexto.tempoGlobal));
+        Double tempoStatusFila = this.statusMap.get(fila);
+        this.statusMap.put(fila, Optional.ofNullable(tempoStatusFila).orElse(0.0)  + (tempoEvento - Contexto.tempoGlobal));
     }
 
     public void adicionarEvento() {
@@ -56,7 +57,7 @@ public class Fila {
     }
 
     public boolean possuiEspaco() {
-        return fila < tamanhoMaximoDaFila;
+        return fila < tamanhoMaximoDaFila || tamanhoMaximoDaFila == 0;
     }
 
     public boolean possuiServidorDisponivel() {
@@ -89,7 +90,7 @@ public class Fila {
                 fila,
                 Contexto.tempoGlobal, perda);
 
-        for (int i = 0; i <= tamanhoMaximoDaFila; i++) {
+        for (int i = 0; i < statusMap.size(); i++) {
             System.out.printf("QUEUE HAD SIZE %s PER %s times WITH %s OF PROBABILITY \n", i,
                     statusMap.get(i), getProbabilidade(i));
         }
@@ -103,15 +104,18 @@ public class Fila {
     public Integer getDestinoRoteamento() {
         if (roteamentos == null || roteamentos.isEmpty()) return null;
 
-        double aleatorio = GeradorNumeroAleatorio.generateRandomNumberFrom(0.0, 100.0, true);
+        double aleatorio = GeradorNumeroAleatorio.generateRandomNumberFrom(134775813, Math.pow(2, 32), true);
 
         Integer filaDestino = null;
 
         this.roteamentos.sort(Comparator.comparingDouble(Roteamento::getProbabilidade));
 
+        Double probabilidade = 0.0;
         for (Roteamento roteamento : this.roteamentos) {
-            if (aleatorio < roteamento.getProbabilidade()) {
+            probabilidade += roteamento.getProbabilidade();
+            if (aleatorio <= probabilidade) {
                 filaDestino = roteamento.getIndexFila();
+                break;
             }
         }
 
