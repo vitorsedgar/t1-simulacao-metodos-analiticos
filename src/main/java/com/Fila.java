@@ -9,10 +9,10 @@ import java.util.Optional;
 public class Fila {
 
   public String nome;
-  public int fila;
-  public int tamanhoMaximoDaFila;
-  public int nServidores;
-  public int perda;
+  public Integer fila;
+  public Optional<Integer> tamanhoMaximoDaFila;
+  public Integer nServidores;
+  public Integer perda;
   public Map<Integer, Double> statusMap;
   public Double tempoChegadaMinimo;
   public Double tempoChegadaMaximo;
@@ -20,10 +20,10 @@ public class Fila {
   public Double tempoSaidaMaximo;
   public List<Roteamento> roteamentos;
 
-  public Fila(String nome, int tamanhoMaximoDaFila, int nServidores,
+  public Fila(String nome, Optional<Integer> tamanhoMaximoDaFila, Integer nServidores,
       Double tempoChegadaMinimo,
       Double tempoChegadaMaximo,
-      Double tempoSaidaMinimo, Double tempoSaidaMaximo, List<Roteamento> roteamentos) {
+      Double tempoSaidaMinimo, Double tempoSaidaMaximo) {
 
     this.nome = nome;
     this.nServidores = nServidores;
@@ -35,17 +35,16 @@ public class Fila {
     this.fila = 0;
     this.perda = 0;
     this.statusMap = new HashMap<>();
-    this.roteamentos = roteamentos;
-
-    for (int i = 0; i <= tamanhoMaximoDaFila; i++) {
-      this.statusMap.put(i, 0.0);
-    }
   }
 
   public void contabilizaTempo(Double tempoEvento) {
     Double tempoStatusFila = this.statusMap.get(fila);
     this.statusMap.put(fila,
         Optional.ofNullable(tempoStatusFila).orElse(0.0) + (tempoEvento - Contexto.tempoGlobal));
+  }
+
+  public String getNome() {
+    return nome;
   }
 
   public void adicionarEvento() {
@@ -61,7 +60,9 @@ public class Fila {
   }
 
   public boolean possuiEspaco() {
-    return fila < tamanhoMaximoDaFila || tamanhoMaximoDaFila == 0;
+    return !tamanhoMaximoDaFila.isPresent()
+        || fila < tamanhoMaximoDaFila.get()
+        || tamanhoMaximoDaFila.get() == 0;
   }
 
   public boolean possuiServidorDisponivel() {
@@ -94,10 +95,9 @@ public class Fila {
         fila,
         Contexto.tempoGlobal, perda);
 
-    for (int i = 0; i <= tamanhoMaximoDaFila; i++) {
-      System.out.printf("QUEUE HAD SIZE %s PER %s times WITH %s OF PROBABILITY \n", i,
-          statusMap.get(i), getProbabilidade(i));
-    }
+    statusMap.forEach((integer, aDouble) ->
+        System.out.printf("QUEUE HAD SIZE %s PER %s times WITH %s OF PROBABILITY \n", integer,
+            aDouble, getProbabilidade(integer)));
   }
 
   private String getProbabilidade(int statusIndex) {
@@ -131,4 +131,7 @@ public class Fila {
     return filaDestino;
   }
 
+  public void setRoteamentos(List<Roteamento> roteamentos) {
+    this.roteamentos = roteamentos;
+  }
 }
