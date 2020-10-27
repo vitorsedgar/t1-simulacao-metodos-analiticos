@@ -2,19 +2,27 @@ package com;
 
 public class Roteamento {
 
-    private int indexFila;
+    private String indexFila;
     private double probabilidade;
 
-    public Roteamento(int indexFila, double probabilidade) {
+    public Roteamento(String indexFila, double probabilidade) {
         this.indexFila = indexFila;
         this.probabilidade = probabilidade;
     }
 
-    public int getIndexFila() {
+    public String getIndexFila() {
         return indexFila;
+    }
+
+    public void setIndexFila(String indexFila) {
+        this.indexFila = indexFila;
     }
 
     public double getProbabilidade() {
         return probabilidade;
+    }
+
+    public void setProbabilidade(double probabilidade) {
+        this.probabilidade = probabilidade;
     }
 }

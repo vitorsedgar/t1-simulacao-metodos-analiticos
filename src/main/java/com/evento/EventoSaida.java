@@ -9,22 +9,33 @@ import java.util.List;
 
 public class EventoSaida extends EventoAbstract {
 
-    public EventoSaida(double tempo, int indexFilaOrigem) {
+    public EventoSaida(double tempo, String indexFilaOrigem) {
         super(tempo, indexFilaOrigem);
     }
 
     @Override
     public void executa(List<Fila> filas) {
-        filas.forEach(fila-> fila.contabilizaTempo(tempo));
-        Contexto.tempoGlobal = tempo;
-        Fila fila = filas.get(indexFilaOrigem);
+        contabilizaTempos(filas);
+
+        Fila fila = filas.stream()
+            .filter(fila1 -> fila1.nome.equals(indexFilaOrigem))
+            .findFirst().get();
 
         fila.removerEvento();
         if (fila.naoPossuiServidorDisponivel()) {
-            Escalonador.agendar(new EventoSaida(
-                    Contexto.tempoGlobal + GeradorNumeroAleatorio.getNextEventTime(fila.getTempoSaidaMinimo(), fila.getTempoSaidaMaximo()),
-                    indexFilaOrigem)
-            );
+            String destinoRoteamento = fila.getDestinoRoteamento();
+            if (destinoRoteamento != null) {
+                Escalonador.agendar(new EventoRoteamento(
+                        Contexto.tempoGlobal + GeradorNumeroAleatorio.getNextEventTime(fila.getTempoSaidaMinimo(), fila.getTempoSaidaMaximo()),
+                        indexFilaOrigem,
+                        destinoRoteamento)
+                );
+            } else {
+                Escalonador.agendar(new EventoSaida(
+                        Contexto.tempoGlobal + GeradorNumeroAleatorio.getNextEventTime(fila.getTempoSaidaMinimo(), fila.getTempoSaidaMaximo()),
+                        indexFilaOrigem)
+                );
+            }
         }
     }
 
