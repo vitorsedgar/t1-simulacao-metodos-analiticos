@@ -6,12 +6,12 @@ import java.util.Map;
 
 public class YamlConfigPojo {
   private int rndnumbersPerSeed;
-  private List<Integer> seeds;
+  private List<Double> seeds;
   private Map<String, Integer> arrivals;
   private Map<String, QueueConfig> queues;
   private List<OutputConfig> network;
 
-  public YamlConfigPojo(int rndnumbersPerSeed, List<Integer> seeds,
+  public YamlConfigPojo(int rndnumbersPerSeed, List<Double> seeds,
       Map<String, Integer> arrivals, Map<String, QueueConfig> queues,
       List<OutputConfig> network) {
     this.rndnumbersPerSeed = rndnumbersPerSeed;
@@ -32,11 +32,11 @@ public class YamlConfigPojo {
     this.rndnumbersPerSeed = rndnumbersPerSeed;
   }
 
-  public List<Integer> getSeeds() {
+  public List<Double> getSeeds() {
     return seeds;
   }
 
-  public void setSeeds(List<Integer> seeds) {
+  public void setSeeds(List<Double> seeds) {
     this.seeds = seeds;
   }
 

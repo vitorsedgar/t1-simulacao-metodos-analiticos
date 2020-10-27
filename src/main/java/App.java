@@ -1,6 +1,7 @@
 import com.Contexto;
 import com.Escalonador;
 import com.Fila;
+import com.GeradorNumeroAleatorio;
 import com.QueueConfig;
 import com.Roteamento;
 import com.YamlConfigPojo;
@@ -8,6 +9,7 @@ import com.evento.Evento;
 import com.evento.EventoChegada;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
@@ -15,7 +17,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Optional;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class App {
 
@@ -26,7 +27,19 @@ public class App {
 
     Double somatorio = 0.0;
 
-    for (int i = 0; i < 5; i++) {
+    int quantidadeRepeticoes;
+    boolean useSeeds;
+
+    try {
+       quantidadeRepeticoes = pojo.getSeeds().size();
+       useSeeds = true;
+    } catch (Exception e) {
+      quantidadeRepeticoes = 5;
+      useSeeds = false;
+    }
+
+    for (int i = 0; i < quantidadeRepeticoes; i++) {
+      if (useSeeds) GeradorNumeroAleatorio.seed = pojo.getSeeds().get(i);
 
       List<Fila> filas = pojo.getQueues().entrySet()
           .stream()
@@ -42,12 +55,14 @@ public class App {
 
       System.out.printf("Execução da %dº simulação: \n\n", i + 1);
 
+      if (useSeeds) System.out.printf("Seed %s: \n", pojo.getSeeds().get(i));
+
       Map<String, Integer> arrivals = pojo.getArrivals();
       String firstQueue = (String) arrivals.keySet().stream().toArray()[0];
 
       Evento eventoInicial = new EventoChegada(arrivals.get(firstQueue), firstQueue);
       Escalonador.iniciarEscalonador(eventoInicial);
-      Contexto.start(filas);
+      Contexto.start(filas, pojo.getRndnumbersPerSeed());
 
       somatorio += Contexto.tempoGlobal;
 
