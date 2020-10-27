@@ -44,13 +44,17 @@ public class App {
       List<Fila> filas = pojo.getQueues().entrySet()
           .stream()
           .map(App::buildFila)
-          .peek(fila -> fila.setRoteamentos(
-              pojo.getNetwork()
-                  .stream()
-                  .filter(outputConfig -> outputConfig.getSource().equals(fila.getNome()))
-                  .map(outputConfig -> new Roteamento(outputConfig.getTarget(),
-                      outputConfig.getProbability()))
-                  .collect(Collectors.toList())))
+          .peek(fila -> {
+            if (pojo.getNetwork() != null && !pojo.getNetwork().isEmpty()) {
+              fila.setRoteamentos(
+                      pojo.getNetwork()
+                              .stream()
+                              .filter(outputConfig -> outputConfig.getSource().equals(fila.getNome()))
+                              .map(outputConfig -> new Roteamento(outputConfig.getTarget(),
+                                      outputConfig.getProbability()))
+                              .collect(Collectors.toList()));
+            }
+          })
           .collect(Collectors.toList());
 
       System.out.printf("Execução da %dº simulação: \n\n", i + 1);
