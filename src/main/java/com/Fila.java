@@ -109,6 +109,9 @@ public class Fila {
     if (roteamentos == null || roteamentos.isEmpty()) {
       return null;
     }
+    if (roteamentos.size() == 1 && roteamentos.get(0).getProbabilidade() == 1.0) {
+      return roteamentos.get(0).getIndexFila();
+    }
 
     double aleatorio = GeradorNumeroAleatorio
         .generateRandomNumberFrom(134775813, Math.pow(2, 32), true);

@@ -74,7 +74,7 @@ public class App {
 
     }
 
-    System.out.println("\nAvarage global time: " + (somatorio / 5));
+    System.out.println("\nAvarage global time: " + (somatorio / quantidadeRepeticoes));
   }
 
   private static Fila buildFila(Entry<String, QueueConfig> entry) {
