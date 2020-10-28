@@ -9,18 +9,8 @@ Após compilador o jar execute:
 ```java -jar t1-metodos-analiticos-1.0-SNAPSHOT.jar```
 
 - Lembrando que o comando funciona caso o terminal esteja aberto no mesmo diretório do .jar, caso não, aponte para o mesmo
-- É necessário também um arquivo config.txt que deve conter as configurações das filas na seguinte forma:
-
-```
-2:3-2:5-2-3/1=100
-0:0-3:5-1-3
-```
-
-- 2:3 - Tempo de chegada minimo e máximo
-- 2:5 - Tempo de saída minimo e máximo
-- 2 - Número de servidores
-- 5 - Capacidade máxima da fila
-- 1=100 - Index da Fila destino de roteamento = %probabilidade (Caso não informado será considerado como sem probabilidade de roteamento) 
+- É necessário também um arquivo config.yml que deve conter as configurações das filas na seguinte forma:
+- O arquivo de configuração é fixo como config.yml, uma alteração futura permitira que o nome e diretório do arquivo seja passado como argumento para a aplicação 
 
 Exemplo de logging para uso como base: 
 
