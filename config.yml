@@ -4,39 +4,42 @@ rndnumbersPerSeed: 100000
 #Caso informado n seeds será executado n simulações
 #Caso não informado seeds sera executado 5 simulações
 seeds:
-- 8
+   - 8
 
-arrivals: 
-   Senha: 1.0
+arrivals:
+   F1: 1.0
 
-queues: 
-   Senha: 
+queues:
+   F1:
       servers: 1
       minArrival: 1.0
-      maxArrival: 5.0
-      minService: 0.08
-      maxService: 1
-   Atendimento: 
+      maxArrival: 4.0
+      minService: 1.0
+      maxService: 1.5
+   F2:
       servers: 3
-      capacity: 10
+      capacity: 5
       minService: 5.0
-      maxService: 15.0
-   Financeiro: 
+      maxService: 10.0
+   F3:
       servers: 2
-      capacity: 10
-      minService: 5.0
-      maxService: 25.0
+      capacity: 8
+      minService: 10.0
+      maxService: 20.0
 
-network: 
--  source: Senha
-   target: Atendimento
-   probability: 0.8
--  source: Senha
-   target: Financeiro
-   probability: 0.2
--  source: Atendimento
-   target: Financeiro
-   probability: 0.3
--  source: Financeiro
-   target: Atendimento
-   probability: 0.5
+network:
+   -  source: F1
+      target: F2
+      probability: 0.8
+   -  source: F1
+      target: F3
+      probability: 0.2
+   -  source: F2
+      target: F1
+      probability: 0.3
+   -  source: F2
+      target: F3
+      probability: 0.5
+   -  source: F3
+      target: F2
+      probability: 0.7

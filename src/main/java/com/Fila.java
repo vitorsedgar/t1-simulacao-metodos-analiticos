@@ -1,5 +1,6 @@
 package com;
 
+import java.text.DecimalFormat;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
@@ -90,6 +91,9 @@ public class Fila {
   }
 
   public void printaResultados() {
+    System.out.println("#####################################################################################");
+    System.out.println("Fila: " + this.nome);
+
     System.out.printf(
         "\nQUEUE FINAL STATUS: \n QUEUE SIZE: %s \n GLOBAL TIME: %s%n \n CLIENTES PERDIDOS: %s \n",
         fila,
@@ -98,6 +102,13 @@ public class Fila {
     statusMap.forEach((integer, aDouble) ->
         System.out.printf("QUEUE HAD SIZE %s PER %s times WITH %s OF PROBABILITY \n", integer,
             aDouble, getProbabilidade(integer)));
+
+    System.out.printf("\nPopulação média: %s clientes \n", String.format("%.2f",getPopulacaoMedia()));
+    System.out.printf("Vazão: %s clientes/hora \n", String.format("%.2f",getVazao()));
+    System.out.printf("Utilização: %s \n", String.format("%.4f",getUtilizacao()));
+    System.out.printf("Tempo de resposta: %s minutos \n", String.format("%.2f", 60 * getPopulacaoMedia()/getVazao()));
+
+    System.out.println("#####################################################################################");
   }
 
   private String getProbabilidade(int statusIndex) {
@@ -137,4 +148,32 @@ public class Fila {
   public void setRoteamentos(List<Roteamento> roteamentos) {
     this.roteamentos = roteamentos;
   }
+
+  public Double getPopulacaoMedia() {
+    double soma = 0.0;
+    for (int i =0; i < statusMap.size(); i++){
+      Double value = statusMap.get(i);
+      soma += (value/Contexto.tempoGlobal) * i;
+    }
+    return soma;
+  }
+
+  public Double getVazao() {
+    double soma = 0.0;
+    for (int i =0; i < statusMap.size(); i++){
+      Double value = statusMap.get(i);
+      soma += (value/Contexto.tempoGlobal) * (60/((this.tempoSaidaMaximo + this.tempoSaidaMinimo)/2));
+    }
+    return soma;
+  }
+
+  public Double getUtilizacao() {
+    double soma = 0.0;
+    for (int i =0; i < statusMap.size(); i++){
+      Double value = statusMap.get(i);
+      soma += (value/Contexto.tempoGlobal) * (Integer.min(i, this.nServidores)/this.nServidores);
+    }
+    return soma;
+  }
+
 }
